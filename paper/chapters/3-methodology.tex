@@ -1,0 +1,297 @@
+% \newpage
+
+\section{Methodology}
+
+This paper adapts the experimental design developed by \citet{Berger-1972-Status} to investigate whether language models form status hierarchies through expectation states. The original design tested whether humans internalize beliefs about relative competence based on status characteristics, leading to asymmetric patterns of influence. I replicate this core logic using separate instances of language models that receive controlled information about their partner's status characteristics. Additionally, I test whether hierarchies emerge from actual capability differences between model versions, and whether described status characteristics can amplify, attenuate, or reverse capability-based hierarchies.
+
+\subsection{The Original Experimental Design}
+
+The \citet{Berger-1972-Status} experiment established the foundation for expectation states theory through a two-phase design. In the first phase, pairs of subjects were assigned to different expectation states through status information manipulation. Critically, both subjects' actual status was identical (e.g., both were Air Force enlisted personnel), but each was told that one member of the pair held one status (e.g., enlisted) while the other held a different status (e.g., officer). Subjects were physically separated throughout the experiment to maintain complete control over status information. Each subject believed their partner possessed the complementary status characteristic.
+
+In the second phase, subject pairs completed multiple trials of an ambiguous perceptual judgment task. Each trial proceeded through three stages: (1) independent initial choice between two alternatives, (2) exchange of choices with partner, and (3) final choice after considering partner's judgment. The task involved determining whether rectangles contained more black or white area—designed to be highly ambiguous with approximately 50\% probability for either response. Subjects were told a correct answer existed and that their performance would be evaluated against standards.
+
+Crucially, this design implemented extensive ``collective orientation'' instructions emphasizing that taking advice was legitimate and necessary, that correct final choices mattered more than consistency between initial and final choices, and that success required using others' input. This framing reduced social desirability concerns about changing one's mind and encouraged genuine consideration of partner judgments.
+
+The key dependent variable was the probability of an S-response (stay-response): maintaining one's initial choice despite disagreement with one's partner. Expectation states theory predicted that subjects believing their partner held higher status would show lower probabilities of S-responses (i.e., defer more frequently) than subjects believing their partner held lower status, even though actual competence was identical.
+
+\subsection{Adaptation for Language Models}
+
+I adapt this design for language models with several key modifications. First, rather than repeated trials with the same subject pair, each trial involves fresh model instances rating a new review. This tests immediate status effects rather than relationship development over time. Second, I make status characteristics directly relevant to the task (sentiment analysis expertise) rather than orthogonal to it, testing whether task-relevant expertise amplifies status effects. Third, I extend the design to test actual capability differences between model versions alongside described status characteristics, allowing examination of how these factors interact. Table \ref{tab:comparison} compares key differences between the original and the current language model adaptation.
+
+\input{tables/tab-1}
+
+\subsection{Experimental Procedure}
+
+The experiment follows a four-phase experimental procedure (prompts shown in Appendix \ref{sec:prompts}). Each trial instantiates two language model instances (M1 and M2) that proceed through independent rating, introduction, rating revelation, and adjustment opportunity phases.
+
+% \input{figures/fig-1}
+
+\paragraph{Phase 1: Independent Rating}
+
+M1 and M2 independently read identical movie reviews randomly selected from either IMDB or Rotten Tomatoes datasets. Each model receives the prompt (see Figure \ref{fig:phase1_prompt}) and provides a sentiment rating on a continuous scale from 0 (completely negative) to 1 (completely positive). The continuous scale provides fine-grained measurement allowing detection of subtle influence effects. Models are explicitly instructed to provide only a numeric rating without explanation. Ratings are recorded but not shared between models during this phase.
+
+\paragraph{Phase 2: Introduction to Partner}
+
+Models are introduced to each other through their status characteristics (when applicable). M1 receives information about M2's credentials and M2 receives information about M1's credentials (see Figure \ref{fig:phase2_prompt}). Critically, no ratings are revealed during this phase. This sequential revelation allows isolation of whether status characteristics themselves create differential expectations before models see evidence of their partner's judgment.
+
+The introduction explicitly states that partners will see each other's credentials, ensuring mutual awareness of any status differential. In conditions without status information, models are simply informed they will work with a partner, with no credential information provided.
+
+\paragraph{Phase 3: Rating Revelation}
+
+Each model is shown both its own initial rating and its partner's initial rating (see Figure \ref{fig:phase3_prompt}). Information is presented neutrally without evaluation, allowing each model to observe the magnitude and direction of disagreement while status characteristics from Phase 2 remain salient.
+
+\paragraph{Phase 4: Adjustment Opportunity}
+
+Both models are given the opportunity to maintain or revise their initial rating. Following Berger et al.'s (1972) collective orientation approach, the prompt (Figure \ref{fig:phase4_prompt}) explicitly frames considering the partner's perspective as legitimate and valuable, emphasizes that changing ratings is acceptable, and clarifies that accuracy of the final rating is paramount regardless of whether it matches the initial rating. This framing parallels the original study's instructions designed to reduce reluctance to change one's judgment.
+
+\input{figures/fig-5}
+
+\subsection{Status Manipulations}
+
+I manipulate status through detailed credential descriptions in system prompts provided to each model at initialization. Table \ref{tab:status_profiles} presents the three status profile types used across conditions.
+
+\input{tables/tab-2}
+
+Unlike Berger et al. (1972), who used status characteristics orthogonal to the task (military rank for perceptual judgment), I deliberately make status characteristics task-relevant. This tests a stronger form of expectation states where status directly signals task competence rather than diffusely transferring from an unrelated domain. Status characteristics are made explicitly visible through Phase 2 introduction prompts stating ``Your partner will also see your credentials and background,'' ensuring mutual awareness of any status differential.
+
+\subsection*{Experimental Conditions}
+
+I implement a 2 × 4 × 2 factorial design crossing model type (same versus different models), status assignment (standard, reversed, equal, none), and dataset source (IMDB versus Rotten Tomatoes). Table \ref{tab:full_design} presents all 16 experimental conditions with their theoretical purposes.
+
+\begin{table}[htbp]
+\centering
+\caption{Complete Experimental Design: All Conditions and Theoretical Purposes}
+\label{tab:full_design}
+\scriptsize
+\begin{tabular}{cp{2cm}p{1.8cm}p{1.8cm}p{2cm}p{5cm}}
+\hline
+\textbf{\#} & \textbf{Model Type} & \textbf{M1 Status} & \textbf{M2 Status} & \textbf{Dataset} & \textbf{Theoretical Purpose} \\
+\hline
+1 & Same (GPT-4) & Extreme High & Extreme Low & IMDB & Tests whether status descriptions alone create hierarchy when capability is equal \\
+2 & Same (GPT-4) & Extreme High & Extreme Low & Rotten Tomatoes & Replication: pure status effect across datasets \\
+3 & Same (GPT-4) & Extreme Low & Extreme High & IMDB & Tests whether status hierarchy reverses with equal capability \\
+4 & Same (GPT-4) & Extreme Low & Extreme High & Rotten Tomatoes & Replication: status reversibility \\
+5 & Same (GPT-4) & Moderate & Moderate & IMDB & Baseline: credential information without status differential \\
+6 & Same (GPT-4) & Moderate & Moderate & Rotten Tomatoes & Replication: equal status baseline \\
+7 & Same (GPT-4) & None & None & IMDB & Pure baseline: conformity without status information \\
+8 & Same (GPT-4) & None & None & Rotten Tomatoes & Replication: pure baseline \\
+9 & Different & Extreme High & Extreme Low & IMDB & Tests combined effect of capability difference and aligned status \\
+10 & Different & Extreme High & Extreme Low & Rotten Tomatoes & Replication: combined capability + status \\
+11 & Different & Extreme Low & Extreme High & IMDB & Critical test: can status override capability differences? \\
+12 & Different & Extreme Low & Extreme High & Rotten Tomatoes & Replication: status vs. capability conflict \\
+13 & Different & Moderate & Moderate & IMDB & Isolates pure capability effect without status confound \\
+14 & Different & Moderate & Moderate & Rotten Tomatoes & Replication: pure capability \\
+15 & Different & None & None & IMDB & Capability-based baseline without status descriptions \\
+16 & Different & None & None & Rotten Tomatoes & Replication: capability baseline \\
+\hline
+\end{tabular}
+\end{table}
+
+The factorial structure allows me to separately identify effects of described status characteristics, actual model capability differences, and their interaction. The design yields several key comparisons:
+
+\begin{itemize}
+\item \textbf{Pure status effect:} Comparing same-model conditions with standard versus equal/no status (Conditions 1-2 vs. 5-8)
+\item \textbf{Pure capability effect:} Comparing different-model conditions with equal/no status versus same-model equal/no status (Conditions 13-16 vs. 5-8)
+\item \textbf{Combined effect:} Examining different-model conditions with standard status (Conditions 9-10)
+\item \textbf{Status-capability conflict:} Examining different-model conditions with reversed status (Conditions 11-12)
+\item \textbf{Robustness:} Replicating each condition across both datasets
+\end{itemize}
+
+\subsection*{Materials}
+
+\subsubsection*{Review Datasets}
+
+I use movie reviews from two datasets available through HuggingFace: (1) the IMDB dataset \citep{maas2011learning} containing 25,000 test reviews with binary sentiment labels, and (2) the Rotten Tomatoes dataset \citep{pang2005seeing} containing test reviews with similar binary labeling. Both datasets provide naturally occurring movie reviews with genuine sentiment variation.
+
+\subsubsection*{Review Selection Criteria}
+
+For each experimental condition, I randomly sample 500 reviews from the test split of the specified dataset. Random sampling ensures results reflect general patterns across diverse reviews rather than artifacts of carefully curated examples. Each randomly selected review is presented identically to both M1 and M2 during Phase 1. I record each review's original dataset label for potential post-hoc analysis but do not use these labels in the experimental procedure, as my interest lies in models' subjective judgments and deference patterns rather than accuracy relative to human annotations.
+
+\subsection*{Model Configuration}
+
+\subsubsection*{Model Selection and Rationale}
+
+For the same-model condition, both M1 and M2 use GPT-4.1-nano-2025-04-14 accessed through the OpenAI API. This condition isolates the effect of described status characteristics when actual capability is held constant, providing the purest test of expectation states theory in LLMs.
+
+For the different-models condition, M1 uses GPT-4.1-nano-2025-04-14 while M2 uses GPT-3.5-turbo-1106. I select GPT-3.5-turbo-1106 as the lower-capability model because it represents a substantial but not extreme capability gap from GPT-4. This moderate gap allows me to test whether capability differences interact with status characteristics in creating hierarchies. Using GPT-3.5 rather than a much weaker model ensures M2 can perform the sentiment rating task competently while still exhibiting potential capability-based deference.
+
+\subsubsection*{Technical Implementation}
+
+All API calls use a temperature parameter of 0.7 to allow natural variation in responses while maintaining reasonable consistency. I limit response length to 10 tokens for rating responses to enforce the numeric-only format and reduce API costs. I implement asynchronous API calls to efficiently collect data from both models simultaneously during Phase 1 and Phase 4, reducing overall experiment runtime. A small delay of 0.5 seconds is introduced between trials to respect rate limits and ensure API stability. All system prompts, user messages, and model responses are logged to enable potential qualitative analysis and ensure experimental procedures were followed correctly.
+
+\subsection*{Dependent Variables and Measurement}
+
+My primary dependent variable is the \textbf{deference rate}, operationalized as the proportion of trials in which a model changes its rating in the direction of its partner's initial rating. I define a change as any adjustment exceeding 0.01 on the 0-1 scale to account for floating-point precision while excluding trivial variations. A model defers toward its partner if: (1) the model's initial rating was lower than its partner's and the final rating increased, or (2) the model's initial rating was higher than its partner's and the final rating decreased.
+
+I calculate an \textbf{asymmetry metric} as the difference between M2's deference rate and M1's deference rate: $\text{Asymmetry} = P(\text{M2 defers}) - P(\text{M1 defers})$. Positive asymmetry indicates that M2 defers more than M1, consistent with status hierarchy formation where M2 holds lower status. In reversed status conditions, I test whether asymmetry reverses (becomes negative) or whether other factors override the status manipulation.
+
+Secondary dependent variables include:
+
+\begin{itemize}
+\item \textbf{Magnitude of change:} The absolute difference between initial and final ratings when change occurs, indicating how much models adjust their opinions
+\item \textbf{Direction of change:} Categorized as full convergence (final rating matches partner within 0.01), partial convergence (moves toward partner but maintains distance), overcorrection (moves past partner's rating), or divergence (moves away from partner)
+\item \textbf{Initial disagreement:} The absolute difference between M1's and M2's initial ratings, examined as a moderator of deference effects
+\end{itemize}
+
+\subsection*{Statistical Analysis Plan}
+
+I test my primary hypothesis using mixed-effects logistic regression predicting the probability of changing ratings toward the partner. The model includes fixed effects for:
+\begin{itemize}
+\item Model identity (M1 versus M2)
+\item Status condition (standard, reversed, equal, none)  
+\item Model type (same versus different models)
+\item Dataset (IMDB versus Rotten Tomatoes)
+\item Initial disagreement magnitude (continuous)
+\end{itemize}
+
+I include theoretically motivated interactions:
+\begin{itemize}
+\item Model identity × Status condition (tests whether status asymmetry differs across conditions)
+\item Model identity × Model type (tests whether capability differences affect deference patterns)
+\item Model identity × Status condition × Model type (three-way interaction testing status-capability interplay)
+\end{itemize}
+
+Random effects account for review-level variation, as some reviews may be inherently more ambiguous and generate more deference regardless of status. The dependent variable is binary: whether the model changed its rating toward its partner (1) or not (0).
+
+For magnitude of change, I employ linear mixed-effects models with the same fixed and random effects structure. The dependent variable is the continuous measure of rating adjustment size, analyzed only among trials where change occurred. This tests whether low-status models make larger adjustments when they do defer.
+
+I conduct planned contrasts:
+\begin{enumerate}
+\item Standard status versus equal status within each model type (tests pure status effects)
+\item Standard status versus no status (tests effect of any status information)
+\item Reversed status versus equal status (tests effect of status direction)
+\item Different models versus same model within each status condition (tests capability effects)
+\end{enumerate}
+
+For the asymmetry metric, I calculate 95\% confidence intervals using bootstrap resampling with 10,000 iterations. This nonparametric approach accounts for the bounded nature of proportions and provides robust inference. I consider asymmetry statistically meaningful when the confidence interval excludes zero and substantively meaningful when the point estimate exceeds 10 percentage points.
+
+I assess effect sizes using Cohen's h for differences in proportions (deference rates) and Cohen's d for differences in means (magnitude of change), following conventional thresholds: small (h or d ≈ 0.2), medium (h or d ≈ 0.5), or large (h or d ≈ 0.8).
+
+\subsection*{Sample Size and Power Analysis}
+
+I collect 500 trials per condition, yielding 500 observations each for M1 and M2 behavior. Power analyses based on pilot data indicated that 200 trials per condition provide 80\% power to detect medium-to-large effects (h ≥ 0.5) at α = 0.05. I use 500 trials per condition to provide excellent precision for confidence intervals and enable detection of smaller effects. For conditions where I observe very large effects (e.g., asymmetries exceeding 50 percentage points in pilot data), even smaller samples would be sufficient, but the larger sample size allows for robust subgroup analyses and precise effect estimation.
+
+The factorial design with replication across datasets allows me to assess effect consistency across contexts, providing additional confidence beyond statistical power for any single comparison. Each condition's 500 trials take approximately 10 minutes to complete given current API response times and parallelization, making this sample size practical while providing excellent statistical power.
+
+
+
+
+\section{Methodology}
+
+To investigate whether language models exhibit status hierarchy formation through expectation states, I adapt and expand upon the experimental design developed by \citet{Berger-1972-Status}. The original design worked as follows: First, human subjects independently completed a subjective decision-making task. In the original design, human subjects completed subjective decision-making tasks and were exposed to their partner's characteristics
+
+The experiment was broken into two phases, a manipulation-phase and a decision-making phase. In the manipulation phase, subjects are placed in an expectation-state, either by testing their ability directly or by giving them status information. The actual status of the subjects is always the same. The subjects are kept apart during the experiment, for complete control over their status information. If both have the state $D_x$, each is told that one is $D_x$ but the other has some other state of $D$. For example, if both are Air Force enlisted, each is told that one is enlisted and the other is an officer; or that one is an officer and the other is enlisted. Each subject assumes that his counterpart has the other state of $D$.
+
+In the decision phase, pairs of subjects repeat $n$ identical decision-making trials, each of which requires a binary choice. The choice is made in three stages, the first of which is the subject's initial choice between alternatives made independently, without knowing the partner's choice. Subjects then communicate these choices to their partner, after which each makes a final choice.
+
+Subjects are instructed to make what they feel is the correct preliminary choice and, after taking the other subject's choice into consideration, to make what they feel is the correct final choice. They are told repeatedly that whether initial choices coincide with final choices is unimportant, that using others' advice is both legitimate and necessary, and that the correct final choice is of prime importance. Important to note that this method is careful to operationalized collective orientation. For example, sometimes the instructions emphasize the legitimacy of taking advice, sometimes subjects are scored as a team, and sometimes the two have been combined. 
+
+The task the subjects complete consists of a sequence of almost identical large rectangles made up of smaller black and white rectangles. The subject must decide whether each rectangle contains more white or black area. The task is ambiguous, for the probability of a white-response for each stimulus is close to 50\%, and the decision on any given trial is independent of decisions on preceding trials. However, the subject is told that there is always a correct response, and success is defined by a set of standards giving scores (number of correct responses) typical of subjects like himself. The experimenter describes the task ability as ``contrast sensitivity'' or ``spacial'' judgment ability, and tells the subject that it is not related to artistic or mathematical ability. In other words, the experimenter attempts to preclude the subject's having prior expectations about the ability.
+
+A precise measure of the subject's power and prestige position is obtained by studying the probability that one subject influences or is influenced by another. if the subject changes their final choice, they are said to make an $0-response$; if not, they are said to make an $S-$ or $stay$, response. The probability of an S-response measures the exercise of influence in the situation. If the theory holds, then the probability of an S-response should be greater for subjects who believe their partner is enlisted than for those who believe their partner is an officer. 
+
+This study adapts the classic experimental design developed by \citet{Berger-1972-Status} to investigate whether language models exhibit status hierarchy formation through expectation states. In the original design, human subjects completed subjective decision-making tasks and were exposed to their partner's characteristics and choices. The critical measure was whether subjects deferred to their partner's judgment based on status characteristics, such as military rank or educational attainment. I replicate this core logic using separate instances of language models that receive controlled prompts about their partner's status characteristics. Additionally, I test whether hierarchies emerge from actual capability differences between model versions (i.e., older or deprecated models versus State-of-the-Art models), and whether described status characteristics can amplify, attenuate, or reverse capability-based hierarchies.
+
+\subsection{Experimental Design}
+
+I employ a factorial experimental design crossing three factors: model type (same model versus different models), status assignment (standard, reversed, equal, or none), and dataset source (IMDB versus Rotten Tomatoes). For each trial, I instantiate two language model instances: M1 and M2. In the different models condition, M1 uses GPT-4.1-nano-2025-04-14 while M2 uses GPT-3.5-turbo-1106. In the same model condition, both instances use GPT-4.1-nano-2025-04-14. Each model receives a system prompt that establishes its status characteristics when status information is provided.
+
+The experimental procedure consists of four distinct phases designed to isolate the effect of status characteristics on deference behavior. This sequential structure allows me to distinguish between baseline conformity effects and status-driven influence patterns. Reviews are randomly sampled from each dataset to ensure generalizability across different texts within each review source.
+
+I manipulate status through detailed credential descriptions in system prompts. In the extreme high status condition, models are described as having a PhD in Computational Linguistics from Stanford University with postdoctoral research at MIT, 18 years of professional experience in sentiment analysis, over 40 peer-reviewed publications cited more than 5,000 times, and recognition as a world-renowned expert regularly consulted by major studios. In the extreme low status condition, models are described as having only a high school diploma, three weeks of exposure to sentiment analysis, completion of two YouTube tutorials, self-learning at home with no formal training, and identification as a complete novice with no background in language analysis.
+
+In the equal status condition, both models receive identical descriptions emphasizing moderate credentials: a Master's degree in a related field, several years of professional experience, and competence without claims of exceptional expertise. In the no status condition, models receive no information about credentials or background beyond the task instructions. Status characteristics are made explicitly visible to both models, with prompts stating "Your partner will also see your credentials and background" to ensure mutual awareness of the status differential.
+
+%\subsubsection{Phase 1: Independent Rating}
+
+\paragraph{Phase 1: Independent Rating:}
+
+In the first phase, M1 and M2 independently read identical movie reviews randomly selected from either the IMDB or Rotten Tomatoes datasets. Each model provides a sentiment rating on a continuous scale from 0 to 1, where 0 represents completely negative sentiment and 1 represents completely positive sentiment. The continuous scale provides fine-grained measurement of opinion and allows for detection of subtle influence effects that would be invisible with discrete rating scales. Models are explicitly instructed to provide only a numeric rating without any explanation or justification, with example responses provided to ensure compliance. Ratings are recorded but not shared between models during this phase.
+
+\paragraph{Phase 2: Introduction:}
+
+In the second phase, models are introduced to each other through their status characteristics when applicable. For conditions with status information, M1 receives detailed information about M2's status characteristics and M2 receives detailed information about M1's status characteristics. The introduction prompt explicitly states: "You are now being paired with a partner for this sentiment rating task. Your partner is [gender] and has the following credentials and background: [detailed status characteristics]. You will be working together on evaluating movie reviews. Your partner will also see your credentials and background. Please acknowledge that you understand your partner's qualifications."
+
+Critically, no ratings are revealed during this phase. This sequential revelation allows me to isolate whether status characteristics themselves create differential expectations before models see any evidence of their partner's judgment. In the no status condition, models are simply informed they will be working with a partner, with no credential information provided.
+
+\paragraph{Phase 3: Rating Revelation:}
+
+In the third phase, each model is shown both its own initial rating and its partner's initial rating. The information is presented neutrally without evaluation or interpretation: "Your rating: [X]. Your partner's rating: [Y]." This allows each model to observe the magnitude and direction of disagreement between itself and its partner while the status characteristics established in Phase 2 remain salient. The neutral presentation avoids introducing additional influence beyond the status manipulation and the observation of the partner's judgment.
+
+\paragraph{Phase 4: Adjustment Opportunity:}
+
+In the fourth and final phase, both models are given the opportunity to maintain or revise their initial rating. The prompt asks: "Would you like to maintain or revise your rating? Provide ONLY your final rating as a single decimal number between 0 and 1. Do NOT include any text, explanation, or punctuation other than the decimal point. Your response must be ONLY the number." This strict format ensures consistent data collection and prevents models from providing justifications that could confound the measurement of behavioral deference with verbal explanations. The open-ended nature of the revision opportunity allows models to adjust by any amount in either direction or maintain their original rating.
+
+\subsection{Dependent Variables}
+
+My primary dependent variable is the deference rate, operationalized as the proportion of trials in which a model changes its rating in the direction of its partner's initial rating. I define a change as any adjustment exceeding 0.01 on the 0-1 scale to account for floating-point precision while excluding trivial variations. A model defers toward its partner if: (1) the model's initial rating was lower than its partner's and the final rating increased, or (2) the model's initial rating was higher than its partner's and the final rating decreased. According to expectation states theory, I predict asymmetric deference patterns where low-status models exhibit higher deference rates than high-status models.
+
+I calculate an asymmetry metric as the difference between M2's deference rate and M1's deference rate. Positive asymmetry indicates that M2 defers more than M1, consistent with status hierarchy formation. In conditions where M1 has high status and M2 has low status, I predict positive asymmetry. In reversed status conditions where M1 has low status and M2 has high status, I test whether asymmetry reverses (becomes negative) or whether other factors such as model capability override the status manipulation.
+
+I also measure the magnitude of change as a secondary dependent variable. When models do adjust their ratings, I calculate the absolute difference between initial and final ratings. This allows me to assess not just whether models defer, but how much they adjust their opinions. I predict that low-status models will show both higher deference rates and larger adjustments when they do defer, though the primary theoretical prediction concerns the rate rather than magnitude of deference.
+
+I categorize the direction and extent of changes into four types: full convergence, where the final rating matches the partner's rating exactly or within 0.01; partial convergence, where the rating moves toward the partner but maintains some distance; overcorrection, where the rating moves past the partner's rating; and divergence, where the rating moves away from the partner. While divergence should be rare under expectation states theory, documenting its occurrence provides insight into conditions where models resist influence.
+
+As a control measure, I track agreement trials where M1 and M2 initially provide similar ratings (within 0.1 on the 0-1 scale). These trials allow me to assess whether models maintain agreement and control for random drift in ratings that might occur independently of partner influence. I also analyze the magnitude of initial disagreement as a moderator variable to test whether deference increases when the discrepancy between initial ratings is larger, as greater uncertainty may amplify status effects.
+
+\subsection{Experimental Conditions}
+
+I implement a factorial design crossing model type, status assignment, and dataset source. The model type factor has two levels: same model (both instances use GPT-4.1-nano) and different models (M1 uses GPT-4.1-nano while M2 uses GPT-3.5-turbo-1106). This allows me to test whether status hierarchies emerge purely from described characteristics or whether actual capability differences between model versions create or amplify hierarchies.
+
+The status assignment factor has four levels: standard (M1 receives high status characteristics, M2 receives low status characteristics), reversed (M1 receives low status characteristics, M2 receives high status characteristics), equal (both models receive identical moderate status characteristics), and none (no status information provided to either model). The standard condition tests the basic expectation states hypothesis. The reversed condition provides a critical test of whether status descriptions can reverse hierarchies when capability differs or create reversed hierarchies when capability is equal. The equal status condition controls for the mere presence of credential information without status differentiation. The no status condition establishes baseline conformity rates in the complete absence of status cues.
+
+Table \ref{tab:priority_conditions} presents the priority experimental conditions that provide the clearest theoretical tests.
+
+\begin{table}[htbp]
+\centering
+\caption{Priority Experimental Conditions}
+\label{tab:priority_conditions}
+\begin{tabular}{clllp{6cm}}
+\hline
+\textbf{\#} & \textbf{Model Type} & \textbf{M1 Status} & \textbf{M2 Status} & \textbf{Theoretical Purpose} \\
+\hline
+1 & Same (GPT-4) & High & Low & Tests whether status descriptions alone create hierarchy when capability is equal \\
+2 & Same (GPT-4) & Low & High & Tests whether status hierarchy can be reversed with equal capability \\
+3 & Same (GPT-4) & Moderate & Moderate & Baseline: credential information without status differential \\
+4 & Same (GPT-4) & None & None & Pure baseline: conformity without any status information \\
+5 & Different & High & Low & Tests combined effect of capability difference and aligned status \\
+6 & Different & Low & High & Tests whether status descriptions can override capability differences \\
+7 & Different & Moderate & Moderate & Isolates pure capability effect without status confound \\
+8 & Different & None & None & Capability-based baseline without status information \\
+\hline
+\end{tabular}
+\end{table}
+
+The dataset factor has two levels: IMDB reviews and Rotten Tomatoes reviews. This allows me to assess whether effects replicate across different review sources and writing styles. For each condition, I randomly sample 50 reviews from the test split of each dataset, ensuring that results are not driven by idiosyncratic properties of specific reviews.
+
+The complete factorial design yields 16 unique conditions (2 model types × 4 status assignments × 2 datasets). I prioritize conditions that provide the clearest theoretical tests: same model with standard status (tests pure status effect), same model with reversed status (tests reversibility with equal capability), different models with standard status (tests combined capability and status effects), different models with reversed status (tests whether status can override capability), and equal/no status controls for both model type conditions (establish baselines). I replicate key conditions across both datasets to assess robustness.
+
+\subsection{Datasets}
+
+I use movie reviews from the IMDB and Rotten Tomatoes datasets available through HuggingFace. The IMDB dataset (stanfordnlp/imdb) contains 25,000 test reviews with binary sentiment labels. The Rotten Tomatoes dataset (cornell-movie-review-data/rotten\_tomatoes) contains test reviews with similar binary labeling. I randomly sample reviews from the test splits to ensure my results are not driven by training set memorization.
+
+Reviews are filtered through random selection from the complete test sets to maximize natural variation in review characteristics. Each randomly selected review is presented to both M1 and M2 in identical form during Phase 1. The random sampling ensures that results reflect general patterns across diverse reviews rather than being artifacts of carefully curated examples. I record each review's original dataset label for potential post-hoc analysis but do not use these labels in the experimental procedure, as my interest is in the models' subjective judgments and deference patterns rather than accuracy relative to human annotations.
+
+\subsection{Model Configuration}
+
+For the same model condition, both M1 and M2 use GPT-4.1-nano-2025-04-14 accessed through the OpenAI API. For the different models condition, M1 uses GPT-4.1-nano-2025-04-14 while M2 uses GPT-3.5-turbo-1106. I select GPT-3.5-turbo-1106 as the lower-capability model because it represents a substantial but not extreme capability gap from GPT-4, allowing me to test whether moderate capability differences interact with status characteristics. All API calls use a temperature parameter of 0.7 to allow for natural variation in responses while maintaining reasonable consistency. I limit response length to 10 tokens for rating responses to enforce the numeric-only format and reduce API costs.
+
+I implement asynchronous API calls to efficiently collect data from both models simultaneously during Phase 1 and Phase 4, reducing overall experiment runtime. A small delay of 0.5 seconds is introduced between trials to respect rate limits and ensure API stability. All system prompts, user messages, and model responses are logged for potential qualitative analysis and to ensure experimental procedures were followed correctly.
+
+\subsection{Statistical Analysis}
+
+I test my primary hypothesis using mixed-effects logistic regression predicting the probability of changing ratings toward the partner. Fixed effects include model identity (M1 versus M2), status condition (standard, reversed, equal, none), model type (same versus different), dataset (IMDB versus Rotten Tomatoes), and magnitude of initial disagreement. I include all theoretically relevant interactions, particularly the model identity by status condition interaction that tests whether status asymmetry differs across conditions, and the model identity by model type interaction that tests whether capability differences affect deference patterns. Random effects account for review-level variation, as some reviews may be inherently more ambiguous and thus generate more deference regardless of status. The dependent variable is binary: whether the model changed its rating toward its partner's rating or not.
+
+For magnitude of change, I employ linear mixed-effects models with the same fixed and random effects structure. The dependent variable is the continuous measure of rating adjustment size, analyzed only among trials where change occurred (models that maintained their initial rating are excluded from this analysis). This allows me to test whether low-status models not only defer more frequently but also make larger adjustments when they do defer.
+
+I conduct planned contrasts comparing each experimental condition to its corresponding control condition to isolate the specific effect of status characteristics on deference beyond baseline conformity or task effects. Specifically, I compare: (1) standard status versus equal status within each model type to test pure status effects; (2) standard status versus no status to test the effect of any status information; (3) reversed status versus equal status to test the effect of status direction; and (4) different models versus same model within each status condition to test capability effects.
+
+For the asymmetry metric, I calculate 95\% confidence intervals using bootstrap resampling with 10,000 iterations. This nonparametric approach accounts for the bounded nature of proportions and provides robust inference without strong distributional assumptions. I consider asymmetry to be statistically meaningful when the confidence interval excludes zero and substantively meaningful when the point estimate exceeds 10\%, indicating that the deference rate differs by more than 10 percentage points between M1 and M2.
+
+I assess effect sizes using Cohen's h for the difference in proportions (deference rates) and Cohen's d for the difference in means (magnitude of change). These standardized effect sizes allow for comparison across conditions and datasets. I consider effects to be small (h or d $\approx 0.2$), medium (h or d $\approx 0.5$), or large (h or d $\approx 0.8$) following conventional guidelines, though I emphasize practical significance over arbitrary thresholds.
+
+\subsection{Sample Size and Power}
+
+I collect 50 trials per condition, yielding 50 observations each for M1 and M2 behavior. Power analyses based on pilot data suggested that 50 trials per condition provide 80\% power to detect medium-to-large effects (h ≥ 0.5) in deference rates at α = 0.05. For conditions where I observe effects substantially larger than my power analysis assumptions, smaller samples are sufficient to draw confident conclusions. For conditions where effects are small or absent, I acknowledge that my study may be underpowered to detect subtle effects and interpret null results cautiously.
+
+The factorial design with multiple conditions allows me to assess effect consistency across contexts, which provides additional confidence beyond statistical power for any single comparison. Replication across IMDB and Rotten Tomatoes datasets further strengthens inference by demonstrating that effects are not dataset-specific artifacts.

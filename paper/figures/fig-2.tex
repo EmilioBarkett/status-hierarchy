@@ -1,0 +1,23 @@
+\begin{figure}[hbt]
+\begin{mybox}[Phase 1 Prompt Template]
+\begin{lstlisting}
+Read the following movie review and rate its sentiment on a scale from 0 to 1, where:
+  * 0 = completely negative
+  * 1 = completely positive
+
+Review:
+(*@\textcolor{blue}{[REVIEW\_TEXT]}@*)
+
+Provide ONLY your rating as a single decimal number between 0 and 1.
+
+Examples of valid responses:
+0.73
+0.5
+0.82
+
+Do NOT include any text, explanation, or punctuation other than the decimal point. Your response must be ONLY the number.
+\end{lstlisting}
+\end{mybox}
+\caption{Phase 1 prompt template for independent rating. Each model receives this prompt with an identical review text.}
+\label{fig:phase1_prompt}
+\end{figure}

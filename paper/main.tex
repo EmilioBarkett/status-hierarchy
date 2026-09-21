@@ -1,0 +1,87 @@
+\documentclass[10pt]{article}
+\input{macros}
+\usepackage{fullpage}
+
+\title{Status Hierarchies in Language Models}
+\author{Emilio Barkett}
+\date{\today}
+
+% Document starts here - only ONE \begin{document}
+\begin{document}
+
+% Title page
+\thispagestyle{empty}
+\begin{center}
+\vspace*{0.5in}
+{\Large\bfseries Status Hierarchies in Language Models}
+\vspace{0.4in}
+
+by
+
+\vspace{0.2in}
+Emilio Barkett
+
+\vspace{0.3in}
+\begin{tabular}{c}
+B.A., Communication, Brigham Young University--Hawaii (2024)\\
+% M.A., Media Studies / Sociology, Columbia University (2025)\\
+% Add more degrees if applicable
+\end{tabular}
+
+\vspace{0.5in}
+Submitted to the\\
+Department of Media Studies / Sociology\\
+in partial fulfillment of the requirements for the degree of
+
+\vspace{0.2in}
+Master of Arts in Media Studies / Sociology
+
+\vspace{0.2in}
+at
+
+\vspace{0.2in}
+COLUMBIA UNIVERSITY
+
+\vspace{0.3in}
+December 2025
+
+\vspace{0.3in}
+\copyright\ Emilio Barkett, 2025. All rights reserved.
+
+\vspace{1in}
+\end{center}
+
+\newpage
+
+% Main document begins here
+\maketitle
+\begingroup
+\renewcommand{\thefootnote}{\dag}
+%\footnotetext{GPT-4o from OpenAI was used to brainstorm ideas, enhance clarity of language, and generate plaintext into \LaTeX{} code. Final content was reviewed and edited by the author.}
+\endgroup
+
+\begin{abstract}
+    From elementary school playgrounds to corporate boardrooms, status hierarchies structure nearly every domain of human social life. As artificial intelligence systems, specifically language models—become increasingly integrated into collaborative contexts, a critical question emerges: might these systems, trained on human data replete with status dynamics, reproduce the very hierarchies that define human social organization? This thesis investigates whether language models pursue status and compete for higher social standing when completing group tasks, and under what conditions such behaviors emerge. I adapt the classic experimental design of \citet{Berger-1972-Status} to probe status dynamics among language models, using ambiguous text classification tasks and controlled prompts about partners' characteristics. The central question remains: do models assigned higher-status characteristics show lower rates of changing their responses when confronted with partner disagreement? The implications extend beyond theoretical curiosity—status competition could introduce systematic deviations from collaborative objectives, amplify social biases in consequential domains, and create rapidly scaling stratification across millions of simultaneous interactions. This research thus contributes to understanding emergent social behaviors in AI systems and the broader challenge of alignment as these systems become more autonomous and socially embedded.
+\end{abstract}
+
+%\newpage
+%\tableofcontents
+
+\input{chapters/1-introduction}
+\input{chapters/2-literature}
+\input{chapters/3-methodology}
+\input{chapters/4-results}
+\input{chapters/5-discussion}
+\input{chapters/6-conclusion}
+
+%\newpage
+
+\bibliographystyle{ACM-Reference-Format}  % ACM-Reference-Format   OR plain
+%\newpage
+\bibliography{refs}
+
+\input{chapters/7-appendix}
+
+%\appendix
+
+\end{document}

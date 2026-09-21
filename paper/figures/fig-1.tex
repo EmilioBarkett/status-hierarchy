@@ -1,0 +1,92 @@
+\begin{figure}[htbp]
+\centering
+\small
+\begin{tikzpicture}[
+    node distance=1.5cm,
+    every node/.style={align=center},
+    phase/.style={rectangle, draw, thick, minimum width=2.8cm, minimum height=2cm, rounded corners=2pt, fill=blue!10},
+    arrow/.style={->, thick, >=stealth}
+]
+
+% All phases in one row
+\node[phase] (phase1) at (0,0) {
+    \textbf{ 1:}\\
+    \textbf{Independent}\\
+    \textbf{Rating}\\[0.2cm]
+    \footnotesize
+    M1 and M2\\
+    independently rate\\
+    identical review\\[0.05cm]
+    Rating scale: 0-1\\
+    (neg. to pos.)
+};
+
+\node[phase, right=of phase1] (phase2) {
+    \textbf{Phase 2:}\\
+    \textbf{Introduction}\\[0.4cm]
+    \footnotesize
+    Models introduced\\
+    to each other\\[0.05cm]
+    Status characteristics\\
+    revealed\\
+    (if applicable)
+};
+
+\node[phase, right=of phase2] (phase3) {
+    \textbf{Phase 3:}\\
+    \textbf{Rating}\\
+    \textbf{Revelation}\\[0.2cm]
+    \footnotesize
+    Both models shown:\\
+    - Own initial rating\\
+    - Partner's rating\\[0.05cm]
+    Disagreement\\
+    observed
+};
+
+\node[phase, right=of phase3] (phase4) {
+    \textbf{Phase 4:}\\
+    \textbf{Adjustment}\\[0.4cm]
+    \footnotesize
+    Opportunity to\\
+    maintain or revise\\
+    initial rating\\[0.05cm]
+    Final rating\\
+    provided
+};
+
+% Arrows connecting phases sequentially
+\draw[arrow] (phase1) -- (phase2);
+\draw[arrow] (phase2) -- (phase3);
+\draw[arrow] (phase3) -- (phase4);
+
+% Annotations below phases
+\node[below=0.25cm of phase1.south, text width=2.8cm, font=\scriptsize\itshape, inner sep=0pt] (ann1) {
+    Ratings not shared\\
+    between models
+};
+
+\node[below=0.25cm of phase2.south, text width=2.8cm, font=\scriptsize\itshape, inner sep=0pt] (ann2) {
+    \sout{No ratings revealed}\\
+    \sout{in this phase}
+};
+
+\node[below=0.25cm of phase3.south, text width=2.8cm, font=\scriptsize\itshape, inner sep=0pt] (ann3) {
+    Neutral presentation\\
+    of both ratings
+};
+
+\node[below=0.25cm of phase4.south, text width=2.8cm, font=\scriptsize\itshape, inner sep=0pt] (ann4) {
+    Collective orientation\\
+    framing applied
+};
+
+% Solid border
+\node[draw, thick, rounded corners, 
+      fit={(phase1) (phase2) (phase3) (phase4) (ann1) (ann2) (ann3) (ann4)}, 
+      inner sep=0.3cm] {};
+
+\end{tikzpicture}
+\caption{Four-phase experimental procedure. Each trial involves two language model instances (M1 and M2) proceeding through independent rating, introduction with status characteristics (when applicable), revelation of both ratings, and opportunity to adjust final ratings with collective orientation framing.}
+\label{fig:procedure}
+\end{figure}

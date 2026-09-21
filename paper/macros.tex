@@ -1,0 +1,122 @@
+%auto-ignore
+
+\usepackage{fancyvrb,fvextra}
+\usepackage{xcolor} % For coloring text
+
+\usepackage[protrusion=false]{microtype}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs} 
+\usepackage{color}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}  
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{cleveref}
+\usepackage{bm}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{tikz}
+
+
+\usepackage{listings}
+\lstset{
+    basicstyle=\small\ttfamily,
+    breaklines=true,
+    breakatwhitespace=true,
+    columns=flexible,
+    keepspaces=true,
+    xleftmargin=0.3cm,
+    xrightmargin=0.3cm,
+    breakindent=0pt,
+    escapeinside={(*@}{@*)}
+}
+
+\usetikzlibrary{positioning, fit, arrows.meta}
+%  \doublespace
+\DefineVerbatimEnvironment{MyVerbatim}{Verbatim}{
+  commandchars=@\{\},
+  breaklines=true
+}
+
+
+% \lstset{
+%     % basicstyle=\ttfamily\small,     % Set font to monospaced and small
+%     breaklines=true,                % Enable automatic line breaking
+%     % frame=single,                   % Add a single-line frame around the code
+%     % numbers=left,                   % Show line numbers on the left
+%     moredelim={[is][keywordstyle]{@@}{@@}},
+%     % numberstyle=\tiny\color{gray},  % Style for line numbers
+%     % xleftmargin=15pt,               % Add left margin
+%     % xrightmargin=15pt,              % Add right margin
+%     showstringspaces=false         % Don't show spaces in strings
+% }
+
+\lstdefinestyle{customstyle}{
+    moredelim={[is][keywordstyle]{@@}{@@}},  % Set the delimiters and styling
+    keywordstyle=\color{blue}\textbf,               % Example keyword style
+    breaklines=true,  
+    basicstyle=\ttfamily
+}
+
+% Apply the custom style globally
+\lstset{style=customstyle}
+\lstset{
+  literate={```}{{\textasciigrave\textasciigrave\textasciigrave}}2,
+}
+
+\newtcolorbox{mybox}[1][]{
+    title=#1,
+    fonttitle=\small,
+    fontupper=\small,
+    left=2mm,
+    right=2mm,
+    top=1mm,
+    bottom=0mm,
+}
+
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}{Observation}
+\crefname{observation}{Observation}{Observations}
+
+\DeclareMathOperator*{\E}{\mathbb{E}}
+
+\DeclareMathOperator*{\argmax}{\mathrm{argmax}}
+\DeclareMathOperator*{\argmin}{\mathrm{argmin}}
+
+
+\def\midd{\middle\|}
+
+\newcommand{\KL}[2]{D_{\mathrm{KL}}\left(#1\;\midd\;#2\right)}
+
+\def\1{\mathbf{1}}
+\def\supp{\mathrm{supp}}
+
+\def\eps{\varepsilon}
+
+\def\opt{\mathrm{opt}}
+
+\def\K{{\mathcal{K}}}
+\def\P{{\mathrm{P}}}
+\def\T{{\mathcal{T}}}
+\def\X{{\mathcal{X}}}
+\def\tokens{{\Sigma}}
+
+\def\c{\mathbf{c}}
+\def\r{\mathbf{r}}
+\def\x{\mathbf{x}}
+\def\endtoken{{\oslash}}
+
+\newcommand{\adam}[1]{\textcolor{blue}{\textit{(#1)}}}
+\newcommand{\david}[1]{\textcolor{red}{\textit{(#1)}}}
+
