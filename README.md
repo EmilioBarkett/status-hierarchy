@@ -37,9 +37,11 @@ status-hierarchy/
 
 Files in `results/` named `condition{N}_{...}_imdb` hold the IMDb trials for one condition, with `-v1` and `-v2` variants of each. `experiment_results_{date}` files are individual timestamped runs.
 
-## Author
+## Author and advisors
 
-- **Emilio Barkett**, Columbia University
+- **Emilio Barkett**, Columbia University (author)
+- **James Chu**, Columbia University (advisor)
+- **David M. Markowitz** (advisor)
 
 ## Citation
 
